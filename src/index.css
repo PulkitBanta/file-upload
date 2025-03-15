@@ -1,59 +1,70 @@
 :root {
+  --bg: #242424;
+  --color: #ffffff;
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--color);
+  background-color: var(--bg);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100vh;
+  min-width: 100vw;
 }
 
-h1 {
+p {
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.heading {
   font-size: 3.2em;
   line-height: 1.1;
+  text-align: center;
 }
 
-button {
+.upload-container {
+  margin: 0 auto;
+
+  height: max(40%, 400px);
+  width: max(50%, 600px);
+  border: 2px dashed var(--color);
+  padding: 40px;
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+
+  display: grid;
+  place-items: center;
+
+  gap: 2.5rem;
 }
-button:hover {
-  border-color: #646cff;
+
+.upload-container input {
+  display: none;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+.upload-container .text {
+  font-weight: 600;
+}
+
+.upload-container.drag-active {
+  background-color: color-mix(in oklab, #4c14a7 10%, white);
+  color: var(--bg);
+
+  border: 2px dashed var(--bg);
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+    --bg: rgb(214, 214, 214);
+    --color: #242424;
   }
 }

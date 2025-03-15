@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "h" // Tell TypeScript to use Preact's h function
+  }
+}
