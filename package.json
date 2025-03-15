@@ -1,6 +1,7 @@
 {
   "name": "file-upload",
   "private": true,
+  "homepage": "https://pulkitbanta.github.io/file-upload",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
