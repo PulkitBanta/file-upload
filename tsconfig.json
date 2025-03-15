@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "jsx": "react",
-    "jsxFactory": "h" // Tell TypeScript to use Preact's h function
+    "jsxFactory": "h", // Tell TypeScript to use Preact's h function
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "module": "ESNext"
   }
 }

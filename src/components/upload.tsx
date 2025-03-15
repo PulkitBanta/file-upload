@@ -11,12 +11,12 @@ type UploadProps = {
   supportedTypes?: string[];
   /** handler called with the uploaded files */
   onUpload?: (files: File[]) => void;
-  /** handle error if any */
-  onError?: (file: File) => void;
+  /** handle error if any, the callback is called with file and type of error i.e. size, type */
+  onError?: (file: File, type?: string) => void;
 };
 
 const Upload: FunctionComponent<UploadProps> = memo(
-  ({ maxSize, multiple, supportedTypes = [".pdf"], onUpload, onError }) => {
+  ({ maxSize = 1, multiple, supportedTypes = [".pdf"], onUpload, onError }) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [isDraggingFiles, setIsDraggingFiles] = useState(false);
 
@@ -25,16 +25,27 @@ const Upload: FunctionComponent<UploadProps> = memo(
         const uploadedFiles: File[] = [];
         for (let i = 0; i < files.length; i++) {
           const file = files.item(i);
+          // check file size
           if (maxSize && file.size > maxSize * 1e6) {
             console.error(`file size bigger than ${maxSize}mb`);
-            onError?.(file);
-            continue;
+            onError?.(file, "size");
+            return;
+          }
+          // check file type
+          const isAllowedType = supportedTypes.some((t) => {
+            const allowedType = t.split(".")?.[1];
+            return file.type.includes(allowedType);
+          });
+          if (!isAllowedType) {
+            console.error(`file type not allowed`);
+            onError?.(file, "type");
+            return;
           }
           uploadedFiles.push(file);
         }
         onUpload?.(uploadedFiles);
       },
-      [onUpload],
+      [onUpload, supportedTypes, maxSize],
     );
 
     const handleDragOver = useCallback(

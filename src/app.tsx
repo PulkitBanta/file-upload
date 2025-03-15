@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { useState } from "preact/compat";
+import { useCallback, useState } from "preact/compat";
 import { RxCross2 } from "react-icons/rx";
 
 import Upload from "./components/upload";
@@ -8,6 +8,12 @@ import "./index.css";
 export function App() {
   const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState("");
+
+  const handleOnError = useCallback(
+    (file, type) =>
+      setError(type === "size" ? `${file.name} size is larger than 1mb` : `${file.name} type is not allowed`),
+    [],
+  );
 
   return (
     <div>
@@ -39,9 +45,12 @@ export function App() {
         <Upload
           multiple
           maxSize={1}
-          supportedTypes={[".jpg,.png,.pdf"]}
-          onUpload={(files) => setFiles(files)}
-          onError={(file) => setError(`${file.name} size is larger than 1mb`)}
+          onError={handleOnError}
+          supportedTypes={[".jpg", ".png", ".pdf"]}
+          onUpload={(files) => {
+            setError("");
+            setFiles(files);
+          }}
         />
       )}
       {error && <p class="error">{error}</p>}
