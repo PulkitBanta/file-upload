@@ -1,6 +1,7 @@
 import { h, FunctionComponent, JSX } from "preact";
 import { memo, useCallback, useRef, useState } from "preact/compat";
 import { FaRegFileLines } from "react-icons/fa6";
+import { createLanguageService } from "typescript";
 
 type UploadProps = {
   /** maximum size of file, this is independent for each file. Should be defined in mega bytes */
@@ -25,20 +26,19 @@ const Upload: FunctionComponent<UploadProps> = memo(
         const uploadedFiles: File[] = [];
         for (let i = 0; i < files.length; i++) {
           const file = files.item(i);
-          // check file size
-          if (maxSize && file.size > maxSize * 1e6) {
-            console.error(`file size bigger than ${maxSize}mb`);
-            onError?.(file, "size");
-            return;
-          }
+          console.log(file.type);
           // check file type
           const isAllowedType = supportedTypes.some((t) => {
             const allowedType = t.split(".")?.[1];
             return file.type.includes(allowedType);
           });
           if (!isAllowedType) {
-            console.error(`file type not allowed`);
             onError?.(file, "type");
+            return;
+          }
+          // check file size
+          if (maxSize && file.size > maxSize * 1e6) {
+            onError?.(file, "size");
             return;
           }
           uploadedFiles.push(file);
